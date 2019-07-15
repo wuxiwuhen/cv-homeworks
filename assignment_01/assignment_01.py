@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+import random
 
 class picture_augmentationer(object):
     def __init__(self):
@@ -75,10 +76,10 @@ class picture_augmentationer(object):
         pass
 
 def main():
-    inPath = " "
-    outPath = " "
+    inPath = "./assignment_01/data/lena.jpg"
+    outPath = "./assignment_01/data/output"
     augmentation_case = picture_augmentationer()
-    augmentation_case.random_augmentation(inPath, outPath, 100)
+    augmentation_case.random_augmentation(inPath, outPath, 10)
 
 if __name__ == '__main__':
     main()
