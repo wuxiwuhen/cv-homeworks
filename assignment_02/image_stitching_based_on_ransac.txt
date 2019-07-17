@@ -1,0 +1,55 @@
+-----Problem description-----
+
+Given:
+    data – two images
+    model – homography matrix
+    k1, k2 – the maximum numbers of iterations allowed in the algorithm
+    t – a threshold value for determining when a pair of points fits a model
+    d – the number of pair points required to assert that a model fits well to data
+
+Return:
+    bestfit – model parameters which best fit the data (or None if no good model is found)
+
+------Pseudo Code------------
+
+iterations_1 = 0
+iterations_2 = 0
+bestfit = None
+besterr = something really large
+
+image1_feature_points = SIFT(image1)
+image2_feature_points = SIFT(image2)
+
+matching_points = roughly_match(image1_feature_points,image2_feature_points)
+
+while iterations_1 < k1 {
+    maybeinliers = Choose 4 pair of points randomly in matching_points
+
+    while iterations_2 < k2 {
+        maybemodel = Get the homography of maybeinliers
+        alsoinliers = empty set
+
+        for feature_point in image1_feature_points not in maybeinliers {
+            temp_matching_points.location = maybemodel(feature_point.location)
+            error = compare(feature_point, image2_feature_points[temp_matching_points.location])
+            if error smaller than t
+                add points pair (feature_point, image2_feature_points[temp_matching_points.location]) to alsoinliers
+        }
+
+        if alsoinliers is still empty
+            break
+
+        maybeinliers = maybeinliers + alsoinliers
+        iterations_2 += 1
+    }
+
+    bettermodel = Get the homography of maybeinliers
+    thiserr = a measure of how well model fits the data
+
+    if thiserr < besterr {
+            bestfit = bettermodel
+            besterr = thiserr
+        }
+
+    iterations_1 += 1
+}
